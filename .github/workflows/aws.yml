@@ -58,10 +58,6 @@ jobs:
       with:
         distribution: 'corretto'
         java-version: '21'
-        cache: 'gradle'
-        cache-dependency-path: |
-          spring-data-neo4j-container-test/*.gradle*
-          spring-data-neo4j-container-test/**/gradle-wrapper.properties
           
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
