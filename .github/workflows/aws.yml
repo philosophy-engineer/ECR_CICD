@@ -62,6 +62,11 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    - name: Copy Dockerfile
+      env:
+        DOCKERFILE_SECRET : ${{secrets.DOCKERFILE}}
+      run: echo $DOCKERFILE_SECRET | base64 --decode > Dockerfile
+
     - name: Copy Application Yml Secret
       env:
         SECRET_DIR: src/main/resources
