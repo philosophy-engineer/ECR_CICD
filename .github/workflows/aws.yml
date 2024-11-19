@@ -62,12 +62,12 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Copy Secret
+    - name: Copy Application Yml Secret
       env:
-        CREATE_SECRET: ${{secrets.MINGLE_DEV_APPLICATION_YML}}
-        CREATE_SECRET_DIR: src/main/resources
-        CREATE_SECRET_DIR_FILE_NAME: application.yml
-      run: echo $CREATE_SECRET | base64 --decode > $CREATE_SECRET_DIR/$CREATE_SECRET_DIR_FILE_NAME
+        SECRET_DIR: src/main/resources
+        NEO4J_APPLICATION_YML_SECRET: ${{secrets.Neo4j_APPLICATION_YML}}
+        NEO4J_APPLICATION_YML_FILE_NAME: application-neo4j.yml
+      run: echo $NEO4J_APPLICATION_YML_SECRET | base64 --decode > $SECRET_DIR/$NEO4J_APPLICATION_YML_FILE_NAME
 
     - name: Build with Gradle
       run: ./gradlew build
