@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: spring-data-neo4j-container-test
+
+  profiles:
+    include: neo4j
