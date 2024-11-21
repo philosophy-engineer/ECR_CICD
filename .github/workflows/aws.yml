@@ -121,7 +121,7 @@ jobs:
         # Build a docker container with Buildx to make image run on ARM64 machine and
         # push it to ECR so that it can
         # be deployed to ECS of ARM64.
-        docker buildx build --platform linux/arm64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker buildx build --platform linux/arm64 --load -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
@@ -131,6 +131,10 @@ jobs:
  # --tag ${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }} \  
  # --file ./Dockerfile \       
  # --output type=image,push=true .
+
+#  WARNING: No output specified with docker-container driver. Build result will only remain in the build cache. To push result image into registry use --push or to load image into docker use --load
+# An image does not exist locally with the tag: ***.dkr.ecr.ap-northeast-2.amazonaws.com/minmin/demo
+# The push refers to repository [***.dkr.ecr.ap-northeast-2.amazonaws.com/minmin/demo]
 
         
 
