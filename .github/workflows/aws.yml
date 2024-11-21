@@ -70,7 +70,7 @@ jobs:
     - name: Copy Application Yml Secret
       env:
         SECRET_DIR: src/main/resources
-        NEO4J_APPLICATION_YML_SECRET: ${{secrets.Neo4j_APPLICATION_YML}}
+        NEO4J_APPLICATION_YML_SECRET: ${{secrets.APPLICATION_NEO4J_YML}}
         NEO4J_APPLICATION_YML_FILE_NAME: application-neo4j.yml
       run: echo $NEO4J_APPLICATION_YML_SECRET | base64 --decode > $SECRET_DIR/$NEO4J_APPLICATION_YML_FILE_NAME
 
@@ -99,19 +99,6 @@ jobs:
       with:        
         version: latest    
 
-    # - name: Build, tag, and push image to Amazon ECR
-    #   id: build-image
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-    #     IMAGE_TAG: ${{ github.sha }}
-    #   run: |
-    #     # Build a docker container and
-    #     # push it to ECR so that it can
-    #     # be deployed to ECS.
-    #     docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-    #     echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
@@ -124,19 +111,6 @@ jobs:
         docker buildx build --platform linux/arm64 --load -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-
-
- # docker buildx build \        
- # --platform ${{ steps.prepare.outputs.docker_platform }} \      
- # --tag ${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }} \  
- # --file ./Dockerfile \       
- # --output type=image,push=true .
-
-#  WARNING: No output specified with docker-container driver. Build result will only remain in the build cache. To push result image into registry use --push or to load image into docker use --load
-# An image does not exist locally with the tag: ***.dkr.ecr.ap-northeast-2.amazonaws.com/minmin/demo
-# The push refers to repository [***.dkr.ecr.ap-northeast-2.amazonaws.com/minmin/demo]
-
-        
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
