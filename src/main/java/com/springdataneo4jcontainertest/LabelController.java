@@ -19,6 +19,11 @@ public class LabelController {
         return "It is a response of GET request";
     }
 
+    @GetMapping("/test-2")
+    public String dummyGetTwo() {
+        return "It is a response of GET request, Second";
+    }
+
     @PostMapping
     @Transactional
     public String createNewLabel(@RequestParam String name, @Nullable @RequestParam Integer age) {
