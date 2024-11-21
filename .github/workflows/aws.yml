@@ -35,7 +35,7 @@ env:
   ECR_REPOSITORY: minmin/demo                 # set this to your Amazon ECR repository name
   ECS_SERVICE: DemoS                 # set this to your Amazon ECS service name
   ECS_CLUSTER: MInMinDevCluster                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: .aws/DemoMInMinTask.json # set this to the path to your Amazon ECS task definition
+  ECS_TASK_DEFINITION: EcsTaskDefinition.json   # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: DemoMInMinContainer           # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
@@ -83,6 +83,12 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
+
+    - name: Place Task Difinition on Root Directory
+      env:
+        ECS_TASK_DEFINITION_SECRET: ${{secrets.ECS_TASK_DEFINITION}}
+      run: echo $ECS_TASK_DEFINITION_SECRET | base64 --decode > $ECS_TASK_DEFINITION
+        
 
     - name: Login to Amazon ECR
       id: login-ecr
